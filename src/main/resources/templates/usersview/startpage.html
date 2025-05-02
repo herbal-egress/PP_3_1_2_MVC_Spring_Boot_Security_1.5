@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Стартовая страница</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+    </tr>
+    <tr th:each="user, state : ${startkey}"
+        class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+        <td th:utext="${state.count}">...</td> <!-- вместо ... thymeleaf подставит значение-->
+
+        <td th:utext="${user.getName()}">...</td>
+    </tr>
+</table>
+<br/>
+<hr/>
+<a href="/users/admin">Вход в БД</a>
+<br/>
+<hr/>
+<a href="/users/new">Создать юзера с ролями</a>
+<br/>
+<hr/>
+<a href="/logout">Логаут</a>
+</body>
+</html>

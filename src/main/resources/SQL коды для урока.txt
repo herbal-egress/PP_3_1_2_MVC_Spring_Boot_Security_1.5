@@ -1,0 +1,66 @@
+-- для jdbcAuthentication!
+-- Создаём таблицу юзеров в БД для авторизации в программе.
+create table users
+(
+    username varchar(255) not null primary key,
+    password varchar(255) not null,
+    enabled  boolean      not null -- столбец для пометки пользователя отключен/включен
+);
+
+-- создаём связанную таблицу ролей с юзерами. Роли - просто любые слова, со смыслом уровня роли
+
+create table authorities
+(
+    username  varchar(255) not null,
+    authority varchar(255) not null,
+    foreign key (username) references users (username), -- связываем таблицы через столбец username
+    -- что бы одному юзеру можно было присвоить несколько ролей!
+    unique (username, authority)
+);
+-- добавляю админу кастомную роль
+insert into authorities (username, authority)
+VALUES ('admin', 'READ_PROFILE');
+
+-- для DAO Authentication!
+-- создание таблиц для автоматической записи юзеров и их ролей в БД!
+
+-- для DAO Authentication!
+-- создание таблиц для автоматической записи юзеров и их ролей в БД!
+create table if not exists users
+(
+    id       int auto_increment,
+    username varchar(30) not null,
+    password varchar(80),
+    email    varchar(50) unique,
+    primary key (id)
+);
+create table if not exists  roles
+(
+    id   int auto_increment,
+    name varchar(50) not null,
+    primary key (id)
+);
+create table if not exists  users_roles
+(
+    user_id int not null,
+    role_id int    not null,
+    primary key (user_id, role_id),
+    foreign key (user_id) references users (id),
+    foreign key (role_id) references roles (id)
+);
+
+-- Добавляю названия ролей в талицу Roles
+insert into roles (name)
+values ('ROLE_ADMIN'),
+       ('ROLE_USER');
+
+-- добавляю юзера (пароль "admin" и "user" через BCrypt) https://www.browserling.com/tools/bcrypt
+insert into users (username, password, email)
+values ('admin', '$2a$10$HXACYFOA.sWy9nAPPqDRGef.zx8O1YWDLmgf.NXdI.YeNaq9amr7e', 'admin@gmail.com');
+insert into users (username, password, email)
+values ('user', '$2a$10$mHPc8/KUatO5JWuCDHRV2OjYtMuklpOjb7zGKdLxjujc2wjaOqgYy', 'user@gmail.com');
+
+-- добавляю роли юзерам:
+insert into users_roles (user_id, role_id) values (1, 1);
+insert into users_roles (user_id, role_id) values (1, 2);
+insert into users_roles (user_id, role_id) values (2, 2);
