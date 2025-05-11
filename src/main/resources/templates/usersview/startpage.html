@@ -10,19 +10,18 @@
         <th>ID</th>
         <th>Имя</th>
     </tr>
-    <tr th:each="user, state : ${startkey}"
+    <tr th:each="user, state : ${start_key}"
         class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
-        <td th:utext="${state.count}">...</td> <!-- вместо ... thymeleaf подставит значение-->
-
+        <td th:utext="${user.getId()}">...</td>
         <td th:utext="${user.getName()}">...</td>
     </tr>
 </table>
 <br/>
 <hr/>
-<a href="/users/admin">Вход в БД</a>
+<a href="/admin">Вход в БД</a>
 <br/>
 <hr/>
-<a href="/users/new">Создать юзера с ролями</a>
+<a href="/users/reg">Создать юзера с ролями</a>
 <br/>
 <hr/>
 <a href="/logout">Логаут</a>

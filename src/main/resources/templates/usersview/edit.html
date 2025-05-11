@@ -5,17 +5,21 @@
     <title>Обновление данных юзера</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/users/admin/id?id={id}(id=${editkey.getId()})}" th:object="${editkey}">
-    <label for="name">Enter name: </label>
+<form th:method="PATCH" th:action="@{/admin/id?id={id}(id=${edit_key.getId()})}" th:object="${edit_key}">
+    <label for="name">Введите имя: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
-    <label for="age">Enter age: </label>
+    <label for="age">Введите возраст: </label>
     <input type="text" th:field="*{age}" id="age"/>
     <br/>
-    <label for="email">Enter email: </label>
+    <label for="email">Введите email: </label>
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <hr/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <br/>
+    <br/>
     <input type="submit" value="Сохранить изменения в БД!"/>
     <br/>
     <hr/>

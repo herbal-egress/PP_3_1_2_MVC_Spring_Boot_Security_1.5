@@ -5,14 +5,13 @@
     <title>Юзер по ID</title>
 </head>
 <body>
-<p th:text="${userByIdkey.getName() + ', ' + userByIdkey.getAge()}">VALUE</p>
-<p th:text="${'Email: ' + userByIdkey.getEmail()}">VALUE</p>
-<p th:text="${'ID: ' + userByIdkey.getId()}">VALUE</p>
-
-<a th:href="@{/users/admin/edit/id?id={id}(id=${userByIdkey.getId()})}">Изменить инфу</a>
+<p th:text="${userById_key.getName() + ', ' + userById_key.getAge()}">VALUE</p>
+<p th:text="${'Email: ' + userById_key.getEmail()}">VALUE</p>
+<p th:text="${'ID: ' + userById_key.getId()}">VALUE</p>
+<a th:href="@{/admin/edit/id?id={id}(id=${userById_key.getId()})}">Изменить инфу</a>
 <br/>
 <hr/>
-<form th:method="DELETE" th:action="@{/users/admin/id?id={id}(id=${userByIdkey.getId()})}">
+<form th:method="DELETE" th:action="@{/admin/id?id={id}(id=${userById_key.getId()})}">
     <input type="submit" value="Удалить запись из БД!"/>
     <br/>
     <hr/>

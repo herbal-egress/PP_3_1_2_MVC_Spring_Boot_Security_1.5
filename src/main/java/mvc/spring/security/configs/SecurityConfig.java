@@ -9,30 +9,26 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-import javax.sql.DataSource;
-
-@EnableWebSecurity // включаем безопасность! Аннотация @Configuration включена в @EnableWebSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private PasswordEncoderService passwordEncoderService;
-    private UserService userService;
+    private final PasswordEncoderService passwordEncoderService;
+    private final SuccessUserHandler successUserHandler;
+    private final UserService userService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public SecurityConfig(PasswordEncoderService passwordEncoderService, SuccessUserHandler successUserHandler, UserService userService) {
+        this.passwordEncoderService = passwordEncoderService;
+        this.successUserHandler = successUserHandler;
         this.userService = userService;
     }
 
-    @Autowired
-    private SuccessUserHandler successUserHandler; // метод, выполняемый после авторизации
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests() // защиту csrf отключил, т.к. пока не нужен
-                .antMatchers("/users").permitAll()
-                .antMatchers("/users/admin/**").hasRole("ADMIN")
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/users/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin()
@@ -41,17 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessUrl("/users");
     }
 
-    // аутентификация:
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoderService.passwordEncoder()); // инжектим расшифровку паролей
-        authenticationProvider.setUserDetailsService(userService); // передаём инфу о юзере для проверки
+        authenticationProvider.setPasswordEncoder(passwordEncoderService.passwordEncoder());
+        authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
-    }
-
-    @Bean
-    public JdbcUserDetailsManager users(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
     }
 }

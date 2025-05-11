@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Страница USERа</title>
 </head>
 <body>
 Principal говорит, что вы авторизовались как:
-<p th:text="${' ' + auth_name.getUsername()+'.'}">VALUE</p>
+<p th:text="${' ' + auth_name.getName()+'.'}">VALUE</p>
 <p th:text="${'Ваш email: ' + auth_name.getEmail()}">VALUE</p>
+<p th:text="${'Ваши роли: ' + auth_name.getRoles()}">VALUE</p>
 <hr/>
 <a href="/users">На стартовую страницу</a>
 <br/>

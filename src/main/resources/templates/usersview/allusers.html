@@ -5,7 +5,6 @@
     <title>Все юзеры</title>
 </head>
 <body>
-
 <table border="1">
     <tr>
         <th>ID</th>
@@ -13,11 +12,11 @@
         <th>Возраст</th>
         <th>email</th>
     </tr>
-    <tr th:each="user, state : ${alluserskey}"
+    <tr th:each="user, state : ${allusers_key}"
         class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
-        <td th:utext="${state.count}">...</td> <!-- вместо ... thymeleaf подставит значение-->
+        <td th:utext="${user.getId()}">...</td>
         <td>
-            <a th:href="@{/users/admin/id?id={id}(id=${user.getId()})}"
+            <a th:href="@{/admin/id?id={id}(id=${user.getId()})}"
                th:utext="${user.getName()}">...</a>
         </td>
         <td th:utext="${user.getAge()}">...</td>
@@ -26,7 +25,7 @@
 </table>
 <br/>
 <hr/>
-<a href="/users/admin/new">Создать новую запись БД</a>
+<a href="/users/reg">Создать юзера с ролями</a>
 <br/>
 <hr/>
 <a href="/user">Страница авторизованного юзера</a>

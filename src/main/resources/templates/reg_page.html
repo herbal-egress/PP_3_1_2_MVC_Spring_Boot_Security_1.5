@@ -2,33 +2,41 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <title>Регистрация нового пользователя</title>
 </head>
 <body>
 <form th:action="@{/users/save}" th:object="${new_user}" th:method="post">
-    <label for="username"> Введите имя пользователя: </label>
-    <input type="text" th:field="*{username}" id="username"/>
-    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+    <label for="name">Введите имя: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Username Error</div>
+    <br/>
+    <label for="email">Введите емейл: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error
+    </div>
+    <br/>
+    <label for="age">Введите возраст: </label>
+    <input type="text" th:field="*{age}" id="age"/>
+    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age Error
+    </div>
     <br/>
     <label for="password">Введите пароль: </label>
     <input type="password" th:field="*{password}" id="password"/>
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br/>
-    <label for="yearOfBirth">Введите емейл: </label>
-    <input type="text" th:field="*{email}" id="yearOfBirth"/>
-    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error
-    </div>
-    <br/>
+    <hr/>
+    Выберите роль:
     <div th:each="role : ${allRoles}">
         <label>
             <input type="checkbox"
                    name="roles"
                    th:value="${role.id}"
-                   th:field="*{roles}" />
-            <span th:text="${role.name}"></span>
+                   th:field="*{roles}"/>
+            <span th:text="${role.toString()}"></span>
         </label>
     </div>
-    <input type="submit" value="Sign up!"/>
+    <br/>
+    <input type="submit" value="Зарегаться!"/>
 </form>
 </body>
 </html>

@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-// Вынес этот бин в отдельный класс, что бы избавиться от проблемы циклических ссылок в Spring
-
 @Configuration
 public class PasswordEncoderService {
     @Bean
@@ -14,4 +12,3 @@ public class PasswordEncoderService {
         return new BCryptPasswordEncoder();
     }
 }
-
