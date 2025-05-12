@@ -32,7 +32,7 @@ public class UserController {
     @RequestMapping("/users")
     public String pageForAll(Model model) {
         model.addAttribute("start_key", repositoryService.findAllUser());
-        return "usersview/startpage";
+        return "start_page";
     }
 
     @RequestMapping("/admin")
