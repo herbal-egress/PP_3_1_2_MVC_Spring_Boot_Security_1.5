@@ -16,9 +16,23 @@
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <hr/>
-    <label for="password">Введите пароль: </label>
+    <label for="password">Введите новый пароль: </label>
     <input type="password" th:field="*{password}" id="password"/>
     <br/>
+    <!-- Добавленная секция с чекбоксами для ролей -->
+    <div>
+        Выберите роль:
+        <div th:each="role : ${allRoles}">
+            <label>
+                <input type="checkbox"
+                       name="roles"
+                       th:value="${role.id}"
+                       th:field="*{roles}"/>
+                <span th:text="${role.toString()}"></span>
+            </label>
+        </div>
+    </div>
+    <!-- Добавленная секция с чекбоксами для ролей -->
     <br/>
     <input type="submit" value="Сохранить изменения в БД!"/>
     <br/>

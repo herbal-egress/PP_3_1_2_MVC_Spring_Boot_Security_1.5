@@ -31,11 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional (readOnly = true)
     public User findByUsername(String name) {
         return repositoryService.findByUsername(name);
     }
 
     @Override
+    @Transactional (readOnly = true)
     public User findUserById(int id) {
         return repositoryService.findUserById(id);
     }
@@ -68,7 +70,9 @@ public class UserServiceImpl implements UserService {
         updatedUser.setAge(userWithNewInfo.getAge());
         updatedUser.setEmail(userWithNewInfo.getEmail());
         updatedUser.setRoles(userWithNewInfo.getRoles());
-        updatedUser.setPassword(passwordEncoder.encode(userWithNewInfo.getPassword()));
+        if (!userWithNewInfo.getPassword().isEmpty()) { // что бы пароль не хранился в хэше
+            updatedUser.setPassword(passwordEncoder.encode(userWithNewInfo.getPassword()));
+        }
         repositoryService.saveUser(updatedUser);
     }
 
