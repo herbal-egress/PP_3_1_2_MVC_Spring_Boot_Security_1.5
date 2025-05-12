@@ -1,5 +1,6 @@
-package mvc.spring.security.services;
+package mvc.spring.security.utils;
 
+import mvc.spring.security.services.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -5,7 +5,7 @@
     <title>Регистрация нового пользователя</title>
 </head>
 <body>
-<form th:action="@{/users/save}" th:object="${new_user}" th:method="post">
+<form th:action="@{/users/save}" th:object="${newuser_key}" th:method="post">
     <label for="name">Введите имя: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Username Error</div>

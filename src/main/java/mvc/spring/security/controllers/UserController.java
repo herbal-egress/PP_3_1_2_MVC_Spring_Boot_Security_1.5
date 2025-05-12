@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/user")
     public String pageForAuthenticatedUsers(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        model.addAttribute("auth_name", user);
+        model.addAttribute("authname_key", user);
         return "usersview/user_page";
     }
 
@@ -58,7 +58,7 @@ public class UserController {
     public ModelAndView newUser() {
         User user = new User();
         ModelAndView mav = new ModelAndView("reg_page");
-        mav.addObject("new_user", user);
+        mav.addObject("newuser_key", user);
         List<Role> roles = repositoryService.findAllRole();
         mav.addObject("allRoles", roles);
         return mav;
