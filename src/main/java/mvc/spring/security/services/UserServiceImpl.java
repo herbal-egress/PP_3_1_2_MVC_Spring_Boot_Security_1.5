@@ -2,6 +2,7 @@ package mvc.spring.security.services;
 
 import mvc.spring.security.entities.Role;
 import mvc.spring.security.entities.User;
+import mvc.spring.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -13,39 +14,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private RepositoryService repositoryService;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Autowired
-    public void setRepositoryService(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> findAllUser() {
+        return userRepository.findAll();
     }
 
     @Override
-    @Transactional (readOnly = true)
-    public User findByUsername(String name) {
-        return repositoryService.findByUsername(name);
-    }
-
-    @Override
-    @Transactional (readOnly = true)
+    @Transactional(readOnly = true)
     public User findUserById(int id) {
-        return repositoryService.findUserById(id);
+        return userRepository.findUserById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findUserByName(String name) {
+        return userRepository.findByName(name);
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = findByUsername(name);
+        User user = findUserByName(name);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("Пользователь '%s' не найден", name));
         }
@@ -59,13 +63,13 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRoles(user.getRoles());
-        repositoryService.saveUser(user);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void update(int id, User userWithNewInfo) {
-        User updatedUser = repositoryService.findUserById(id);
+        User updatedUser = userRepository.findUserById(id);
         updatedUser.setName(userWithNewInfo.getName());
         updatedUser.setAge(userWithNewInfo.getAge());
         updatedUser.setEmail(userWithNewInfo.getEmail());
@@ -73,13 +77,13 @@ public class UserServiceImpl implements UserService {
         if (!userWithNewInfo.getPassword().isEmpty()) { // что бы пароль не хранился в хэше
             updatedUser.setPassword(passwordEncoder.encode(userWithNewInfo.getPassword()));
         }
-        repositoryService.saveUser(updatedUser);
+        userRepository.save(updatedUser);
     }
 
     @Override
     @Transactional
-    public void deleteById(int id) {
-        repositoryService.deleteUserById(id);
+    public void delete(int id) {
+        userRepository.deleteUserById(id);
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {

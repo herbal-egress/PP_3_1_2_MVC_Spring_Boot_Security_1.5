@@ -2,7 +2,7 @@ package mvc.spring.security.controllers;
 
 import mvc.spring.security.entities.Role;
 import mvc.spring.security.entities.User;
-import mvc.spring.security.services.RepositoryService;
+import mvc.spring.security.services.RoleService;
 import mvc.spring.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -16,34 +16,30 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    private UserService userService;
-    private final RepositoryService repositoryService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public UserController(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @RequestMapping("/users")
     public String pageForAll(Model model) {
-        model.addAttribute("start_key", repositoryService.findAllUser());
-        return "start_page";
+        model.addAttribute("start_key", userService.findAllUser());
+        return "usersview/start_page";
     }
 
     @RequestMapping("/admin")
     public String pageForAdmin(Model model) {
-        model.addAttribute("allusers_key", repositoryService.findAllUser());
+        model.addAttribute("allusers_key", userService.findAllUser());
         return "usersview/allusers";
     }
 
     @GetMapping("/user")
     public String pageForAuthenticatedUsers(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
+        User user = userService.findUserByName(principal.getName());
         model.addAttribute("authname_key", user);
         return "usersview/user_page";
     }
@@ -59,7 +55,7 @@ public class UserController {
         User user = new User();
         ModelAndView mav = new ModelAndView("reg_page");
         mav.addObject("newuser_key", user);
-        List<Role> roles = repositoryService.findAllRole();
+        List<Role> roles = roleService.findAllRole();
         mav.addObject("allRoles", roles);
         return mav;
     }
@@ -67,7 +63,7 @@ public class UserController {
     @GetMapping("/admin/edit/id")
     public String editUser(@RequestParam int id, Model model) {
         model.addAttribute("edit_key", userService.findUserById(id));
-        List<Role> roles = repositoryService.findAllRole();
+        List<Role> roles = roleService.findAllRole();
         model.addAttribute("allRoles", roles);
         return "usersview/edit";
     }
@@ -89,7 +85,7 @@ public class UserController {
 
     @DeleteMapping("/admin/id")
     public String deleteUser(@RequestParam int id) {
-        userService.deleteById(id);
+        userService.delete(id);
         return "redirect:/admin";
     }
 }

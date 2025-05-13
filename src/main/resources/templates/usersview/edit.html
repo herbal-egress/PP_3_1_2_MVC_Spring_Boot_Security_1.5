@@ -19,7 +19,6 @@
     <label for="password">Введите новый пароль: </label>
     <input type="password" th:field="*{password}" id="password"/>
     <br/>
-    <!-- Добавленная секция с чекбоксами для ролей -->
     <div>
         Выберите роль:
         <div th:each="role : ${allRoles}">
@@ -32,7 +31,6 @@
             </label>
         </div>
     </div>
-    <!-- Добавленная секция с чекбоксами для ролей -->
     <br/>
     <input type="submit" value="Сохранить изменения в БД!"/>
     <br/>
