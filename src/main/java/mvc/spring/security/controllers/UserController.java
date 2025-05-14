@@ -25,7 +25,7 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @RequestMapping("/users")
+    @RequestMapping("/start")
     public String pageForAll(Model model) {
         model.addAttribute("start_key", userService.findAllUser());
         return "usersview/start_page";
