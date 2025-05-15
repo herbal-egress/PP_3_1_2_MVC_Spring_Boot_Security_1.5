@@ -8,7 +8,7 @@
 <h3><strong>Страница для USERа!</strong></h3>
 <p th:text="${'Principal говорит, что вы авторизовались как: ' + authname_key.getName()+'.'}">VALUE</p>
 <p th:text="${'Ваш email: ' + authname_key.getEmail()}">VALUE</p>
-<p th:text="${'Ваши роли: ' + authname_key.getRoles()}">VALUE</p>
+<p th:text="${'Ваши роли: ' + #strings.arrayJoin(authname_key.getRoles(), ', ')}">">VALUE</p>
 <hr/>
 <a href="/start">На стартовую страницу</a>
 <br/>
