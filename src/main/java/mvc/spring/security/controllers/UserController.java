@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public String performRegistration(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String registrationUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "redirect:/start";
         }
