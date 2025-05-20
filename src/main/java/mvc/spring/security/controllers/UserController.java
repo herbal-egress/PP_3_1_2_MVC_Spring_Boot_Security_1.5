@@ -71,10 +71,10 @@ public class UserController {
     @PostMapping("/users/save")
     public String performRegistration(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/users";
+            return "redirect:/start";
         }
         userService.register(user);
-        return "redirect:/users";
+        return "redirect:/start";
     }
 
     @PatchMapping("/admin/id")
